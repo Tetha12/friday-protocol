@@ -40,8 +40,8 @@
         /* GRID SYSTEM UNTUK ALIGNMENT YANG SEMPURNA */
         .sprint-grid {
             display: grid;
-            /* Kolom: No. Hari (40px) | 6 Challenge (equal 1fr) | Lock Button (80px) */
-            grid-template-columns: 40px repeat(6, 1fr) 80px; 
+            /* Kolom: No. Hari (40px) | 5 Challenge (equal 1fr) | Lock Button (80px) */
+            grid-template-columns: 40px repeat(5, 1fr) 80px; 
             gap: 0.75rem; /* Jarak antar kolom */
             align-items: center;
         }
@@ -50,9 +50,9 @@
         @media (max-width: 640px) {
             .sprint-grid {
                 /* Pada mobile, paksa ukuran minimum agar bisa di-scroll horizontal */
-                grid-template-columns: 30px repeat(6, minmax(45px, 1fr)) 60px;
+                grid-template-columns: 30px repeat(5, minmax(45px, 1fr)) 60px;
                 gap: 0.5rem;
-                min-width: 700px; 
+                min-width: 600px; 
             }
         }
         
@@ -464,9 +464,8 @@
         // ===== IDENTITY MANAGEMENT =====
         
         function getDataId() {
-            // Priority: LocalStorage Custom ID -> Auth UID
             const custom = localStorage.getItem('friday_custom_id');
-            return custom || null; // Return null if not set, strict check
+            return custom || null;
         }
 
         window.openIdentityModal = function() {
@@ -481,7 +480,6 @@
                 return;
             }
 
-            // Visual Feedback
             const originalText = btnElement.innerHTML;
             btnElement.innerHTML = `<svg class="animate-spin h-4 w-4 text-white inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...`;
             btnElement.disabled = true;
@@ -489,13 +487,10 @@
             try {
                 localStorage.setItem('friday_custom_id', newId);
                 
-                await loadState(); // Load data for new ID
+                await loadState();
                 
-                // Hide Screens
                 document.getElementById('modal-identity').classList.add('hidden');
                 document.getElementById('screen-welcome').classList.add('hidden');
-                
-                // Show App
                 document.getElementById('app').classList.remove('hidden');
                 
                 showNotification(`Neural Link active: ${newId}`);
@@ -508,19 +503,16 @@
             }
         }
 
-        // HANDLER FOR MODAL (Switch ID)
         document.getElementById('btn-save-id').onclick = function() {
             const input = document.getElementById('input-custom-id');
             performLogin(input.value.trim(), this);
         };
 
-        // HANDLER FOR WELCOME SCREEN (Sync Existing)
         document.getElementById('btn-welcome-sync').onclick = function() {
             const input = document.getElementById('welcome-input-id');
             performLogin(input.value.trim(), this);
         };
 
-        // HANDLER FOR WELCOME SCREEN (Start New)
         document.getElementById('btn-welcome-new').onclick = function() {
             const randomId = 'MP-' + Math.random().toString(36).substr(2, 5).toUpperCase();
             performLogin(randomId, this);
@@ -529,7 +521,6 @@
         // ===== CONFIGURATION =====
         const CHALLENGES = [
             { id: 'c1', title: 'NoFap', icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>', color: 'text-red-500', bgColor: 'bg-red-500' },
-            { id: 'c2', title: 'Coding', icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>', color: 'text-sky-500', bgColor: 'bg-sky-500' },
             { id: 'c3', title: 'Reading', icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>', color: 'text-emerald-500', bgColor: 'bg-emerald-500' },
             { id: 'c4', title: 'Workout', icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>', color: 'text-orange-500', bgColor: 'bg-orange-500' },
             { id: 'c5', title: 'Speaking', icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>', color: 'text-purple-500', bgColor: 'bg-purple-500' },
@@ -547,11 +538,10 @@
 
         // ===== STORAGE FUNCTIONS =====
         async function loadState() {
-            // Need Auth AND a Data ID
             if (!currentAuthUid || !db) return;
             
             const dataId = getDataId();
-            if (!dataId) return; // Wait for ID input
+            if (!dataId) return;
 
             console.log("Loading data for ID:", dataId);
             
@@ -563,7 +553,6 @@
                     state = { ...state, ...docSnap.data() };
                     console.log("Friday Protocol: Data loaded from Cloud");
                 } else {
-                    // Initialize empty state if new ID
                     state = {
                         sprints: [{ id: 's1', title: 'Sprint #1: Awakening', createdAt: Date.now() }],
                         activeSprintId: 's1',
@@ -571,14 +560,12 @@
                         lockedDays: {},
                         currentView: 'dashboard'
                     };
-                    // Try to save new state
                     try {
                         await setDoc(docRef, JSON.parse(JSON.stringify(state))); 
                     } catch (err) {
                         console.warn("Auto-save init failed");
                     }
                 }
-                // Refresh UI
                 updateDashboardStats();
                 renderHeatmap();
                 renderCategoryStats();
@@ -883,12 +870,11 @@
             container.innerHTML = gridHtml;
         }
 
-        // ===== EXPOSED GLOBAL FUNCTIONS (Attached to Window for HTML onclick) =====
+        // ===== EXPOSED GLOBAL FUNCTIONS =====
         window.toggleChallenge = function(dayIndex, challengeId) {
             if (!state.activeSprintId) return;
             const lockKey = `${state.activeSprintId}-${dayIndex}`;
             
-            // STRICT LOCK CHECK
             if (state.lockedDays[lockKey]) { 
                 showNotification('Day is locked! Cannot edit.', 'error'); 
                 return; 
@@ -897,10 +883,9 @@
             const key = `${state.activeSprintId}-${dayIndex}-${challengeId}`;
             state.progress[key] = !state.progress[key];
             
-            // RENDER UI FIRST (Instant Feedback)
             renderSprintDetail();
             
-            saveState(); // Trigger cloud save
+            saveState();
             updateDashboardStats();
             renderHeatmap();
             renderTodayChallenges();
@@ -916,11 +901,10 @@
         };
 
         window.lockDay = function(dayIndex) {
-            // Instant Lock without Confirm
             const lockKey = `${state.activeSprintId}-${dayIndex}`;
             state.lockedDays[lockKey] = true;
             
-            renderSprintDetail(); // Re-render to apply disabled state visually
+            renderSprintDetail();
             saveState();
             
             showNotification('Day locked successfully.');
@@ -937,11 +921,9 @@
                 if (user) {
                     currentAuthUid = user.uid;
                     
-                    // CHECK FOR EXISTING ID
                     const existingId = getDataId();
                     
                     if (existingId) {
-                        // If ID exists, Auto-Login
                         await loadState();
                         document.getElementById('loading-screen').classList.add('opacity-0', 'pointer-events-none');
                         setTimeout(() => {
@@ -949,7 +931,6 @@
                             document.getElementById('app').classList.remove('hidden');
                         }, 500);
                     } else {
-                        // If NO ID (New User / Clear Cache), Show Welcome Screen
                         document.getElementById('loading-screen').classList.add('opacity-0', 'pointer-events-none');
                         setTimeout(() => {
                             document.getElementById('loading-screen').remove();
@@ -983,7 +964,6 @@
         };
 
         document.getElementById('btn-delete-sprint').onclick = () => {
-            // NO CONFIRM - DIRECT ACTION
             state.sprints = state.sprints.filter(s => s.id !== state.activeSprintId);
             if (state.sprints.length > 0) state.activeSprintId = state.sprints[0].id;
             else {
@@ -999,6 +979,4 @@
         };
     </script>
 </body>
-
 </html>
-
