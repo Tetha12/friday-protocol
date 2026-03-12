@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRIDAY Protocol - Lite</title>
     
-    <!-- FAVICON (Dynamic SVG) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22g%22 x1=%220%25%22 y1=%220%25%22 x2=%22100%25%22 y2=%22100%25%22><stop offset=%220%25%22 style=%22stop-color:%230ea5e9;stop-opacity:1%22 /><stop offset=%22100%25%22 style=%22stop-color:%234f46e5;stop-opacity:1%22 /></linearGradient></defs><rect width=%22100%22 height=%22100%22 rx=%2230%22 fill=%22url(%23g)%22 /><path d=%22M35 25h35l-5 10h-20v10h15l-5 10h-10v20h-10z%22 fill=%22white%22 /></svg>" type="image/svg+xml">
 
-    <!-- TAILWIND CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -25,10 +23,8 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* BASE STYLES */
         * { font-family: 'Inter', sans-serif; }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
-        
         svg { max-width: 100%; height: auto; }
 
         .glass-effect {
@@ -37,22 +33,18 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        /* GRID SYSTEM UNTUK ALIGNMENT YANG SEMPURNA */
         .sprint-grid {
             display: grid;
-            /* Kolom: No. Hari (40px) | 5 Challenge (equal 1fr) | Lock Button (80px) */
-            grid-template-columns: 40px repeat(5, 1fr) 80px; 
-            gap: 0.75rem; /* Jarak antar kolom */
+            grid-template-columns: 40px repeat(6, 1fr) 80px; 
+            gap: 0.75rem;
             align-items: center;
         }
         
-        /* Mobile adjustment */
         @media (max-width: 640px) {
             .sprint-grid {
-                /* Pada mobile, paksa ukuran minimum agar bisa di-scroll horizontal */
-                grid-template-columns: 30px repeat(5, minmax(45px, 1fr)) 60px;
+                grid-template-columns: 30px repeat(6, minmax(45px, 1fr)) 60px;
                 gap: 0.5rem;
-                min-width: 600px; 
+                min-width: 700px; 
             }
         }
         
@@ -77,6 +69,13 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
+        .gradient-text-sky {
+            background: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
         
         .card-hover { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-hover:hover {
@@ -85,13 +84,11 @@
         }
         
         .challenge-btn {
-            transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1); /* Instant feedback */
+            transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
-        .challenge-btn:active {
-            transform: scale(0.95);
-        }
+        .challenge-btn:active { transform: scale(0.95); }
         
         .heatmap-cell { transition: all 0.2s ease; }
         .heatmap-cell:hover { transform: scale(1.2); z-index: 10; }
@@ -114,6 +111,86 @@
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(8px);
         }
+
+        /* === CODING TASK STYLES === */
+        .task-item {
+            transition: all 0.2s ease;
+        }
+        .task-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+        .task-item.completed .task-title {
+            text-decoration: line-through;
+            opacity: 0.4;
+        }
+        .task-item.completed {
+            border-color: rgba(14, 165, 233, 0.3) !important;
+        }
+
+        .priority-badge {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 99px;
+        }
+        .priority-high { background: rgba(239,68,68,0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+        .priority-medium { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .priority-low { background: rgba(16,185,129,0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+
+        .tag-badge {
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: rgba(99,102,241,0.15);
+            color: #a5b4fc;
+            border: 1px solid rgba(99,102,241,0.2);
+        }
+
+        .tab-btn {
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            background: rgba(14, 165, 233, 0.15);
+            color: #38bdf8;
+            border-color: rgba(14, 165, 233, 0.4);
+        }
+
+        /* Collapse animation */
+        .collapsible-content {
+            overflow: hidden;
+            transition: max-height 0.3s ease, opacity 0.3s ease;
+        }
+        .collapsible-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+        .collapsible-content.expanded {
+            max-height: 9999px;
+            opacity: 1;
+        }
+
+        @keyframes task-complete {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .task-complete-anim {
+            animation: task-complete 0.3s ease;
+        }
+
+        .code-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            background: rgba(14,165,233,0.1);
+            border: 1px solid rgba(14,165,233,0.2);
+            color: #38bdf8;
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-slate-100 min-h-screen overflow-x-hidden">
@@ -124,7 +201,6 @@
             <div class="relative w-32 h-32 mx-auto">
                 <div class="absolute inset-0 border-4 border-sky-500/30 rounded-full animate-ping"></div>
                 <div class="absolute inset-0 border-4 border-t-sky-500 rounded-full animate-spin"></div>
-                <!-- Network Icon for Cloud Status -->
                 <svg class="w-16 h-16 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
@@ -136,16 +212,15 @@
         </div>
     </div>
 
-    <!-- WELCOME / SYNC SCREEN (Initial Gate) -->
+    <!-- WELCOME / SYNC SCREEN -->
     <div id="screen-welcome" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-slate-950 to-slate-900 p-4">
         <div class="max-w-md w-full glass-effect rounded-3xl p-8 border border-white/10 shadow-2xl relative overflow-hidden">
-            <!-- Decorative background elements -->
             <div class="absolute top-0 right-0 w-32 h-32 bg-sky-500/10 rounded-full blur-3xl -mr-16 -mt-16"></div>
             <div class="absolute bottom-0 left-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl -ml-16 -mb-16"></div>
 
             <div class="text-center mb-8 relative z-10">
                 <div class="w-20 h-20 bg-gradient-to-br from-sky-500/20 to-indigo-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-white/5 shadow-inner">
-                    <svg class="w-10 h-10 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.2-2.858.567-4.171m-3.233 8.649A21.885 21.885 0 011 11c0-2.305.548-4.467 1.523-6.402M19.328 14.731A21.865 21.865 0 0021 11c0-2.206-.576-4.275-1.578-6.12M2.208 18.575a21.72 21.72 0 006.333 3.86"></path></svg>
+                    <svg class="w-10 h-10 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                 </div>
                 <h1 class="text-3xl font-black uppercase tracking-tight mb-2">Friday <span class="gradient-text">Protocol</span></h1>
                 <p class="text-sm text-slate-400 font-mono">Secure Neural Link Connection</p>
@@ -163,13 +238,11 @@
                         <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                     </button>
                 </div>
-
                 <div class="relative flex py-2 items-center">
                     <div class="flex-grow border-t border-white/10"></div>
                     <span class="flex-shrink-0 mx-4 text-slate-600 text-[10px] font-bold uppercase">Or Initialize New</span>
                     <div class="flex-grow border-t border-white/10"></div>
                 </div>
-
                 <button id="btn-welcome-new" class="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl font-black uppercase tracking-widest text-xs shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center gap-2">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                     Start New Protocol
@@ -181,13 +254,12 @@
     <!-- NOTIFICATION CONTAINER -->
     <div id="notification-container"></div>
 
-    <!-- IDENTITY MODAL (For manual updates later) -->
+    <!-- IDENTITY MODAL -->
     <div id="modal-identity" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-white/10 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative">
             <button onclick="document.getElementById('modal-identity').classList.add('hidden')" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-xl transition-all">
                 <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            
             <div class="text-center mb-6">
                 <div class="w-16 h-16 bg-sky-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4 text-sky-500">
                     <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
@@ -195,20 +267,101 @@
                 <h3 class="text-xl font-black uppercase tracking-tight">Neural Link ID</h3>
                 <p class="text-xs text-slate-400 mt-2">Gunakan ID unik untuk menyimpan dan mengakses data Anda dari perangkat mana pun.</p>
             </div>
-
             <div class="space-y-4">
                 <div>
                     <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1 block">Current ID</label>
                     <div class="p-4 rounded-xl bg-slate-800 font-mono text-xs text-sky-400 break-all select-all border border-white/5" id="display-current-id">...</div>
                 </div>
-                
                 <div>
                     <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-1 block">Switch ID (Restore Data)</label>
                     <input type="text" id="input-custom-id" placeholder="e.g. MP-MASTER-001" class="w-full bg-slate-800 border border-white/10 rounded-xl p-4 text-sm font-bold focus:outline-none focus:border-sky-500 transition-all text-white placeholder-slate-600">
                 </div>
-
                 <button id="btn-save-id" class="w-full py-4 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 rounded-xl font-black uppercase tracking-widest text-xs shadow-lg shadow-sky-500/20 transition-all flex items-center justify-center">
                     Link & Sync Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- CODING TASK MODAL -->
+    <!-- ============================================ -->
+    <div id="modal-add-task" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-white/10 rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl relative">
+            <button onclick="document.getElementById('modal-add-task').classList.add('hidden')" class="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-xl transition-all">
+                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="flex items-center gap-3 mb-6">
+                <div class="w-12 h-12 bg-sky-500/20 rounded-xl flex items-center justify-center">
+                    <svg class="w-6 h-6 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-black uppercase tracking-tight">Add Coding Task</h3>
+                    <p class="text-xs text-slate-500 font-mono" id="modal-task-day-label">Day —</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Task Title -->
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 block">Task Title *</label>
+                    <input type="text" id="task-input-title" placeholder="e.g. Build REST API with Express" class="w-full bg-slate-800 border border-white/10 rounded-xl p-3 text-sm font-bold focus:outline-none focus:border-sky-500 transition-all text-white placeholder-slate-600">
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 block">Description (Optional)</label>
+                    <textarea id="task-input-desc" placeholder="What exactly needs to be done?" rows="2" class="w-full bg-slate-800 border border-white/10 rounded-xl p-3 text-sm focus:outline-none focus:border-sky-500 transition-all text-white placeholder-slate-600 resize-none"></textarea>
+                </div>
+
+                <!-- Priority + Category Row -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 block">Priority</label>
+                        <select id="task-input-priority" class="w-full bg-slate-800 border border-white/10 rounded-xl p-3 text-sm font-bold focus:outline-none focus:border-sky-500 transition-all text-white">
+                            <option value="high">🔴 High</option>
+                            <option value="medium" selected>🟡 Medium</option>
+                            <option value="low">🟢 Low</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 block">Category</label>
+                        <select id="task-input-category" class="w-full bg-slate-800 border border-white/10 rounded-xl p-3 text-sm font-bold focus:outline-none focus:border-sky-500 transition-all text-white">
+                            <option value="frontend">Frontend</option>
+                            <option value="backend">Backend</option>
+                            <option value="fullstack">Full Stack</option>
+                            <option value="algorithm">Algorithm</option>
+                            <option value="database">Database</option>
+                            <option value="devops">DevOps</option>
+                            <option value="mobile">Mobile</option>
+                            <option value="ai-ml">AI/ML</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 block">Tags (comma separated)</label>
+                    <input type="text" id="task-input-tags" placeholder="e.g. react, typescript, api" class="w-full bg-slate-800 border border-white/10 rounded-xl p-3 text-sm font-mono focus:outline-none focus:border-sky-500 transition-all text-white placeholder-slate-600">
+                </div>
+
+                <!-- XP Reward -->
+                <div>
+                    <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2 block">XP Reward</label>
+                    <div class="flex gap-2">
+                        <button type="button" class="xp-btn flex-1 py-2 rounded-xl text-xs font-bold border border-white/10 glass-effect hover:border-sky-500/50 transition-all" data-xp="5">+5 XP</button>
+                        <button type="button" class="xp-btn flex-1 py--2 rounded-xl text-xs font-bold border border-white/10 glass-effect hover:border-sky-500/50 transition-all" data-xp="10">+10 XP</button>
+                        <button type="button" class="xp-btn flex-1 py-2 rounded-xl text-xs font-bold border border-white/10 glass-effect hover:border-sky-500/50 transition-all" data-xp="20">+20 XP</button>
+                        <button type="button" class="xp-btn flex-1 py-2 rounded-xl text-xs font-bold border border-white/10 glass-effect hover:border-sky-500/50 transition-all" data-xp="50">+50 XP</button>
+                    </div>
+                    <input type="hidden" id="task-input-xp" value="10">
+                </div>
+
+                <button id="btn-save-task" class="w-full py-4 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 rounded-xl font-black uppercase tracking-widest text-xs shadow-lg shadow-sky-500/20 transition-all flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    Save Task
                 </button>
             </div>
         </div>
@@ -226,8 +379,7 @@
                             <svg class="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
                             </svg>
-                            <!-- Online Indicator -->
-                            <div class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-900 animate-pulse" title="Cloud Sync Active"></div>
+                            <div class="absolute -top-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full border-2 border-slate-900 animate-pulse"></div>
                         </div>
                         <div>
                             <h1 class="font-black text-sm sm:text-lg uppercase tracking-tight">Friday <span class="text-sky-500">Cloud</span></h1>
@@ -235,34 +387,29 @@
                         </div>
                     </div>
                     
-                    <!-- QUICK STATS -->
                     <div class="flex items-center gap-1 sm:gap-2">
                         <div class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl glass-effect">
-                            <svg class="w-3 h-3 sm:w-4 sm:h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                            </svg>
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                             <span class="text-[10px] sm:text-sm font-bold" id="nav-level">Lvl 1</span>
                         </div>
                         <div class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl glass-effect">
-                            <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                            </svg>
+                            <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                             <span class="text-sm font-bold" id="nav-xp">0 XP</span>
                         </div>
                         <div class="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl glass-effect">
-                            <svg class="w-3 h-3 sm:w-4 sm:h-4 text-orange-500 streak-flame" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
-                            </svg>
+                            <svg class="w-3 h-3 sm:w-4 sm:h-4 text-orange-500 streak-flame" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg>
                             <span class="text-[10px] sm:text-sm font-bold" id="nav-streak">0🔥</span>
                         </div>
                     </div>
                     
-                    <!-- USER MENU -->
                     <div class="flex items-center gap-1 sm:gap-3">
+                        <!-- CODING TASKS NAV BUTTON -->
+                        <button onclick="window.showView('coding-tasks')" id="nav-btn-tasks" class="tab-btn hidden sm:flex items-center gap-2 px-3 py-2 rounded-xl glass-effect hover:bg-white/10 transition-all border border-transparent text-xs font-bold uppercase tracking-wider text-slate-400">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                            Code Tasks
+                        </button>
                         <button onclick="window.openIdentityModal()" class="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 rounded-lg sm:rounded-xl glass-effect hover:bg-white/10 transition-all cursor-pointer border border-transparent hover:border-sky-500/30">
-                            <div class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-sky-500 to-indigo-600 rounded-md sm:rounded-lg flex items-center justify-center text-white text-[10px] sm:text-xs font-bold">
-                                MP
-                            </div>
+                            <div class="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-sky-500 to-indigo-600 rounded-md sm:rounded-lg flex items-center justify-center text-white text-[10px] sm:text-xs font-bold">MP</div>
                             <span class="text-[10px] sm:text-sm font-bold hidden md:block">Michael Pandia</span>
                         </button>
                     </div>
@@ -279,13 +426,10 @@
                     
                     <!-- HERO STATS -->
                     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-                        <!-- Total XP -->
                         <div class="glass-effect rounded-2xl sm:rounded-3xl p-4 sm:p-6 card-hover border border-sky-500/20">
                             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 gap-2">
                                 <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-sky-500/20">
-                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                    </svg>
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                                 </div>
                                 <div class="text-left sm:text-right w-full">
                                     <div class="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500">Total XP</div>
@@ -297,13 +441,10 @@
                             </div>
                         </div>
 
-                        <!-- Current Level -->
                         <div class="glass-effect rounded-2xl sm:rounded-3xl p-4 sm:p-6 card-hover border border-amber-500/20">
                             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 gap-2">
                                 <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-amber-500/20">
-                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                    </svg>
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
                                 </div>
                                 <div class="text-left sm:text-right w-full">
                                     <div class="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500">Level</div>
@@ -313,13 +454,10 @@
                             <div class="text-[8px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wider">Next: <span id="stat-next-level">50 XP</span></div>
                         </div>
 
-                        <!-- Current Streak -->
                         <div class="glass-effect rounded-2xl sm:rounded-3xl p-4 sm:p-6 card-hover border border-orange-500/20">
                             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 gap-2">
                                 <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-orange-500/20">
-                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-orange-500 streak-flame" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path>
-                                    </svg>
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-orange-500 streak-flame" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z" clip-rule="evenodd"></path></svg>
                                 </div>
                                 <div class="text-left sm:text-right w-full">
                                     <div class="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500">Streak</div>
@@ -329,13 +467,10 @@
                             <div class="text-[8px] sm:text-[10px] font-bold text-slate-500 uppercase tracking-wider">Best: <span id="stat-best-streak">0 days</span></div>
                         </div>
 
-                        <!-- Completion Rate -->
                         <div class="glass-effect rounded-2xl sm:rounded-3xl p-4 sm:p-6 card-hover border border-emerald-500/20">
                             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 sm:mb-4 gap-2">
                                 <div class="p-2 sm:p-3 rounded-lg sm:rounded-xl bg-emerald-500/20">
-                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                    </svg>
+                                    <svg class="w-4 h-4 sm:w-6 sm:h-6 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                                 </div>
                                 <div class="text-left sm:text-right w-full">
                                     <div class="text-[8px] sm:text-[10px] font-black uppercase tracking-widest text-slate-500">Completion</div>
@@ -367,14 +502,11 @@
 
                     <!-- CHALLENGES OVERVIEW & QUICK ACTION -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-                        
-                        <!-- Category Performance -->
                         <div class="glass-effect rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-white/10">
                             <h2 class="text-lg sm:text-xl font-black uppercase tracking-tight mb-4 sm:mb-6">Category Performance</h2>
                             <div id="category-stats" class="space-y-3 sm:space-y-4"></div>
                         </div>
 
-                        <!-- Quick Daily Log -->
                         <div class="glass-effect rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-white/10">
                             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-2">
                                 <h2 class="text-lg sm:text-xl font-black uppercase tracking-tight">Today's Progress</h2>
@@ -389,25 +521,20 @@
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6 gap-3">
                             <h2 class="text-lg sm:text-xl font-black uppercase tracking-tight">Your Sprints</h2>
                             <button id="btn-new-sprint" class="px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 rounded-lg sm:rounded-xl font-bold uppercase text-[10px] sm:text-xs tracking-widest transition-all shadow-lg flex items-center gap-2">
-                                <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                                </svg>
+                                <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                                 New Sprint
                             </button>
                         </div>
                         <div id="sprints-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"></div>
                     </div>
-
                 </div>
 
-                <!-- VIEW: SPRINT DETAIL (Hidden by default) -->
+                <!-- VIEW: SPRINT DETAIL -->
                 <div id="view-sprint-detail" class="hidden space-y-6 sm:space-y-8">
                     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                         <div class="flex items-center gap-3 sm:gap-4">
                             <button id="btn-back-dashboard" class="p-2 sm:p-3 rounded-xl sm:rounded-2xl glass-effect hover:bg-white/10 transition-all">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                                </svg>
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                             </button>
                             <div>
                                 <h1 id="sprint-title" class="text-xl sm:text-3xl font-black uppercase tracking-tight">Sprint #1</h1>
@@ -415,37 +542,104 @@
                             </div>
                         </div>
                         <button id="btn-delete-sprint" class="p-2 sm:p-3 text-red-500 hover:bg-red-500/10 rounded-lg sm:rounded-xl transition-all">
-                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                            </svg>
+                            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     </div>
 
-                    <!-- SPRINT CHALLENGE GRID -->
                     <div class="glass-effect rounded-2xl sm:rounded-[2rem] p-4 sm:p-8 border border-white/10 overflow-x-auto custom-scrollbar">
                         <div id="sprint-grid-container"></div>
                     </div>
+                </div>
+
+                <!-- ======================================= -->
+                <!-- VIEW: CODING TASKS (NEW!) -->
+                <!-- ======================================= -->
+                <div id="view-coding-tasks" class="hidden space-y-6 sm:space-y-8">
+                    
+                    <!-- Header -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div class="flex items-center gap-3 sm:gap-4">
+                            <button onclick="window.showView('dashboard')" class="p-2 sm:p-3 rounded-xl sm:rounded-2xl glass-effect hover:bg-white/10 transition-all">
+                                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                            </button>
+                            <div>
+                                <h1 class="text-xl sm:text-3xl font-black uppercase tracking-tight flex items-center gap-3">
+                                    <span class="gradient-text-sky">Coding</span> Tasks
+                                    <span class="code-tag">sprint</span>
+                                </h1>
+                                <p class="text-[10px] sm:text-xs text-slate-500 font-mono mt-1">Organized per day · Cloud synced</p>
+                            </div>
+                        </div>
+
+                        <!-- Stats mini bar -->
+                        <div class="flex gap-2 items-center">
+                            <div class="glass-effect rounded-xl px-4 py-2 text-center border border-sky-500/20">
+                                <div class="text-xl font-black gradient-text-sky" id="ct-stat-total">0</div>
+                                <div class="text-[9px] font-bold uppercase text-slate-500 tracking-wider">Total</div>
+                            </div>
+                            <div class="glass-effect rounded-xl px-4 py-2 text-center border border-emerald-500/20">
+                                <div class="text-xl font-black text-emerald-400" id="ct-stat-done">0</div>
+                                <div class="text-[9px] font-bold uppercase text-slate-500 tracking-wider">Done</div>
+                            </div>
+                            <div class="glass-effect rounded-xl px-4 py-2 text-center border border-amber-500/20">
+                                <div class="text-xl font-black text-amber-400" id="ct-stat-xp">0</div>
+                                <div class="text-[9px] font-bold uppercase text-slate-500 tracking-wider">XP Earned</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter/Sort Tabs -->
+                    <div class="glass-effect rounded-2xl p-4 border border-white/10 flex flex-wrap gap-2 items-center">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mr-2">Filter:</span>
+                        <button class="ct-filter-btn tab-btn active px-3 py-1.5 rounded-lg text-xs font-bold border border-white/10 transition-all" data-filter="all">All</button>
+                        <button class="ct-filter-btn tab-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-white/10 transition-all" data-filter="pending">Pending</button>
+                        <button class="ct-filter-btn tab-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-white/10 transition-all" data-filter="done">Done</button>
+                        <div class="flex-1"></div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-500 mr-2">Sort:</span>
+                        <button class="ct-sort-btn tab-btn active px-3 py-1.5 rounded-lg text-xs font-bold border border-white/10 transition-all" data-sort="day">By Day</button>
+                        <button class="ct-sort-btn tab-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-white/10 transition-all" data-sort="priority">By Priority</button>
+                        <button class="ct-sort-btn tab-btn px-3 py-1.5 rounded-lg text-xs font-bold border border-white/10 transition-all" data-sort="xp">By XP</button>
+                    </div>
+
+                    <!-- Sprint selector for tasks -->
+                    <div class="flex gap-2 items-center flex-wrap" id="ct-sprint-selector"></div>
+
+                    <!-- Task List (grouped by day) -->
+                    <div id="coding-tasks-list" class="space-y-4"></div>
+
+                    <!-- Empty State -->
+                    <div id="ct-empty" class="hidden glass-effect rounded-3xl p-16 border border-white/10 text-center">
+                        <div class="w-20 h-20 bg-sky-500/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                            <svg class="w-10 h-10 text-sky-500/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-black uppercase tracking-tight text-slate-500 mb-2">No Coding Tasks Yet</h3>
+                        <p class="text-sm text-slate-600 mb-6">Add tasks to specific days in your sprint to track coding progress</p>
+                        <button onclick="window.openAddTaskModal(0)" class="px-6 py-3 bg-gradient-to-r from-sky-600 to-indigo-600 rounded-xl font-bold uppercase text-xs tracking-widest transition-all inline-flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            Add First Task
+                        </button>
+                    </div>
+
                 </div>
 
             </div>
         </main>
     </div>
 
-    <!-- LOGIC: FIREBASE & CORE -->
+    <!-- LOGIC -->
     <script type="module">
-        // ===== FIREBASE INIT =====
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js';
         import { getAuth, signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc, collection } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
+        import { getFirestore, doc, setDoc, getDoc } from 'https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js';
 
         const firebaseConfig = {
-        apiKey: "AIzaSyBG923qIdi_d98--jt-J2t2qsUR3ld_2Tk",
-        authDomain: "friday-protocol-44ae7.firebaseapp.com",
-        projectId: "friday-protocol-44ae7",
-        storageBucket: "friday-protocol-44ae7.firebasestorage.app",
-        messagingSenderId: "448191187813",
-        appId: "1:448191187813:web:ee21696c24e0365215af8c",
-        measurementId: "G-CR06E3HJL0"
+            apiKey: "AIzaSyBG923qIdi_d98--jt-J2t2qsUR3ld_2Tk",
+            authDomain: "friday-protocol-44ae7.firebaseapp.com",
+            projectId: "friday-protocol-44ae7",
+            storageBucket: "friday-protocol-44ae7.firebasestorage.app",
+            messagingSenderId: "448191187813",
+            appId: "1:448191187813:web:ee21696c24e0365215af8c",
+            measurementId: "G-CR06E3HJL0"
         };
 
         let app, auth, db;
@@ -453,19 +647,14 @@
             app = initializeApp(firebaseConfig);
             auth = getAuth(app);
             db = getFirestore(app);
-        } catch (e) {
-            console.error("Firebase config missing", e);
-        }
+        } catch (e) { console.error("Firebase config missing", e); }
 
-        const appId = 'friday-protocol-v1'; 
         let currentAuthUid = null;
         let saveTimeout = null;
 
-        // ===== IDENTITY MANAGEMENT =====
-        
+        // ===== IDENTITY =====
         function getDataId() {
-            const custom = localStorage.getItem('friday_custom_id');
-            return custom || null;
+            return localStorage.getItem('friday_custom_id') || null;
         }
 
         window.openIdentityModal = function() {
@@ -473,26 +662,17 @@
             document.getElementById('modal-identity').classList.remove('hidden');
         };
 
-        // SHARED LOGIN FUNCTION
         async function performLogin(newId, btnElement) {
-            if (!newId || newId.length < 4) {
-                showNotification('ID minimal 4 karakter!', 'error');
-                return;
-            }
-
+            if (!newId || newId.length < 4) { showNotification('ID minimal 4 karakter!', 'error'); return; }
             const originalText = btnElement.innerHTML;
             btnElement.innerHTML = `<svg class="animate-spin h-4 w-4 text-white inline mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processing...`;
             btnElement.disabled = true;
-
             try {
                 localStorage.setItem('friday_custom_id', newId);
-                
                 await loadState();
-                
                 document.getElementById('modal-identity').classList.add('hidden');
                 document.getElementById('screen-welcome').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
-                
                 showNotification(`Neural Link active: ${newId}`);
             } catch (error) {
                 console.error("Login failed:", error);
@@ -503,24 +683,14 @@
             }
         }
 
-        document.getElementById('btn-save-id').onclick = function() {
-            const input = document.getElementById('input-custom-id');
-            performLogin(input.value.trim(), this);
-        };
+        document.getElementById('btn-save-id').onclick = function() { performLogin(document.getElementById('input-custom-id').value.trim(), this); };
+        document.getElementById('btn-welcome-sync').onclick = function() { performLogin(document.getElementById('welcome-input-id').value.trim(), this); };
+        document.getElementById('btn-welcome-new').onclick = function() { performLogin('MP-' + Math.random().toString(36).substr(2, 5).toUpperCase(), this); };
 
-        document.getElementById('btn-welcome-sync').onclick = function() {
-            const input = document.getElementById('welcome-input-id');
-            performLogin(input.value.trim(), this);
-        };
-
-        document.getElementById('btn-welcome-new').onclick = function() {
-            const randomId = 'MP-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-            performLogin(randomId, this);
-        };
-
-        // ===== CONFIGURATION =====
+        // ===== CHALLENGES CONFIG =====
         const CHALLENGES = [
             { id: 'c1', title: 'NoFap', icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>', color: 'text-red-500', bgColor: 'bg-red-500' },
+            { id: 'c2', title: 'Coding', icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>', color: 'text-sky-500', bgColor: 'bg-sky-500' },
             { id: 'c3', title: 'Reading', icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>', color: 'text-emerald-500', bgColor: 'bg-emerald-500' },
             { id: 'c4', title: 'Workout', icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>', color: 'text-orange-500', bgColor: 'bg-orange-500' },
             { id: 'c5', title: 'Speaking', icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path></svg>', color: 'text-purple-500', bgColor: 'bg-purple-500' },
@@ -533,45 +703,44 @@
             activeSprintId: null,
             progress: {},
             lockedDays: {},
+            codingTasks: {},   // { sprintId: { day: [taskObj, ...] } }
             currentView: 'dashboard'
         };
 
-        // ===== STORAGE FUNCTIONS =====
+        // Coding tasks filter/sort state (UI only, not persisted)
+        let ctFilter = 'all';
+        let ctSort = 'day';
+        let ctActiveSprint = null;
+        let editingTaskKey = null; // for task editing: "sprintId-day-taskId"
+
+        // ===== STORAGE =====
         async function loadState() {
             if (!currentAuthUid || !db) return;
-            
             const dataId = getDataId();
             if (!dataId) return;
-
-            console.log("Loading data for ID:", dataId);
-            
             try {
                 const docRef = doc(db, 'friday_users', dataId, 'data', 'main');
                 const docSnap = await getDoc(docRef);
-                
                 if (docSnap.exists()) {
-                    state = { ...state, ...docSnap.data() };
-                    console.log("Friday Protocol: Data loaded from Cloud");
+                    const loaded = docSnap.data();
+                    state = { 
+                        sprints: [], activeSprintId: null, progress: {}, lockedDays: {},
+                        codingTasks: {}, currentView: 'dashboard',
+                        ...loaded 
+                    };
+                    if (!state.codingTasks) state.codingTasks = {};
                 } else {
                     state = {
                         sprints: [{ id: 's1', title: 'Sprint #1: Awakening', createdAt: Date.now() }],
                         activeSprintId: 's1',
                         progress: {},
                         lockedDays: {},
+                        codingTasks: {},
                         currentView: 'dashboard'
                     };
-                    try {
-                        await setDoc(docRef, JSON.parse(JSON.stringify(state))); 
-                    } catch (err) {
-                        console.warn("Auto-save init failed");
-                    }
+                    try { await setDoc(docRef, JSON.parse(JSON.stringify(state))); } catch(e) {}
                 }
-                updateDashboardStats();
-                renderHeatmap();
-                renderCategoryStats();
-                renderTodayChallenges();
-                renderSprintsList();
-                if (state.currentView === 'sprint-detail') renderSprintDetail();
+                refreshAllUI();
             } catch (e) {
                 console.error("Error loading state:", e);
                 showNotification("Error loading data", "error");
@@ -582,38 +751,42 @@
             if (!currentAuthUid || !db) return;
             const dataId = getDataId();
             if (!dataId) return;
-
             if (saveTimeout) clearTimeout(saveTimeout);
-            
             saveTimeout = setTimeout(async () => {
                 try {
                     const docRef = doc(db, 'friday_users', dataId, 'data', 'main');
-                    await setDoc(docRef, JSON.parse(JSON.stringify(state))); 
-                    console.log("Friday Protocol: Data synced to Cloud (" + dataId + ")");
-                } catch (e) {
-                    console.error("Error saving state:", e);
-                }
-            }, 1000); 
+                    await setDoc(docRef, JSON.parse(JSON.stringify(state)));
+                } catch(e) { console.error("Save error:", e); }
+            }, 800);
+        }
+
+        function refreshAllUI() {
+            updateDashboardStats();
+            renderHeatmap();
+            renderCategoryStats();
+            renderTodayChallenges();
+            renderSprintsList();
+            if (state.currentView === 'sprint-detail') renderSprintDetail();
+            if (state.currentView === 'coding-tasks') renderCodingTasksView();
         }
 
         function showNotification(message, type = 'success') {
             const container = document.getElementById('notification-container');
-            const notification = document.createElement('div');
-            notification.className = `notification-toast glass-effect px-6 py-4 rounded-2xl border ${type === 'success' ? 'border-emerald-500/50 text-emerald-500' : 'border-red-500/50 text-red-500'} font-bold shadow-2xl`;
-            notification.textContent = message;
-            container.appendChild(notification);
-            setTimeout(() => notification.remove(), 3000);
+            const n = document.createElement('div');
+            n.className = `notification-toast glass-effect px-6 py-4 rounded-2xl border ${type === 'success' ? 'border-emerald-500/50 text-emerald-500' : 'border-red-500/50 text-red-500'} font-bold shadow-2xl`;
+            n.textContent = message;
+            container.appendChild(n);
+            setTimeout(() => n.remove(), 3000);
         }
 
-        function getTodayIndex() { return 0; } 
+        function getTodayIndex() { return 0; }
 
+        // ===== STATS =====
         function calculateStats() {
             let totalXP = 0;
             let completedDays = 0;
-            let currentStreak = 0;
             let bestStreak = 0;
             let tempStreak = 0;
-            
             const categoryCounts = {};
             CHALLENGES.forEach(c => categoryCounts[c.id] = 0);
 
@@ -622,35 +795,31 @@
                     let dayComplete = true;
                     CHALLENGES.forEach(challenge => {
                         const key = `${sprint.id}-${day}-${challenge.id}`;
-                        if (state.progress[key]) {
-                            totalXP++;
-                            categoryCounts[challenge.id]++;
-                        } else {
-                            dayComplete = false;
-                        }
+                        if (state.progress[key]) { totalXP++; categoryCounts[challenge.id]++; }
+                        else dayComplete = false;
                     });
-                    
-                    if (dayComplete) {
-                        completedDays++;
-                        tempStreak++;
-                        if (tempStreak > bestStreak) bestStreak = tempStreak;
-                    } else {
-                        tempStreak = 0;
-                    }
+                    if (dayComplete) { completedDays++; tempStreak++; if (tempStreak > bestStreak) bestStreak = tempStreak; }
+                    else tempStreak = 0;
                 }
             });
 
-            currentStreak = tempStreak;
+            // Add coding task XP
+            let taskXP = 0;
+            Object.values(state.codingTasks || {}).forEach(sprintTasks => {
+                Object.values(sprintTasks || {}).forEach(dayTasks => {
+                    (dayTasks || []).forEach(task => { if (task.done) taskXP += (task.xp || 10); });
+                });
+            });
+            totalXP += taskXP;
+
+            const currentStreak = tempStreak;
             const level = Math.floor(totalXP / 50) + 1;
             const nextLevelXP = level * 50;
             const progressToNext = ((totalXP % 50) / 50) * 100;
-
-            return {
-                totalXP, level, nextLevelXP, progressToNext, currentStreak, bestStreak, completedDays, categoryCounts
-            };
+            return { totalXP, level, nextLevelXP, progressToNext, currentStreak, bestStreak, completedDays, categoryCounts };
         }
 
-        // ===== RENDER FUNCTIONS =====
+        // ===== DASHBOARD RENDER =====
         function updateNavStats() {
             const stats = calculateStats();
             document.getElementById('nav-level').textContent = `Lvl ${stats.level}`;
@@ -667,18 +836,12 @@
             document.getElementById('stat-next-level').textContent = `${stats.nextLevelXP} XP`;
             document.getElementById('stat-streak').textContent = `${stats.currentStreak} 🔥`;
             document.getElementById('stat-best-streak').textContent = `${stats.bestStreak} days`;
-            
             if (state.activeSprintId) {
-                let completed = 0;
-                let total = 30 * CHALLENGES.length;
+                let completed = 0, total = 30 * CHALLENGES.length;
                 for (let day = 0; day < 30; day++) {
-                    CHALLENGES.forEach(challenge => {
-                        const key = `${state.activeSprintId}-${day}-${challenge.id}`;
-                        if (state.progress[key]) completed++;
-                    });
+                    CHALLENGES.forEach(challenge => { if (state.progress[`${state.activeSprintId}-${day}-${challenge.id}`]) completed++; });
                 }
-                const completionRate = total > 0 ? Math.round((completed / total) * 100) : 0;
-                document.getElementById('stat-completion').textContent = `${completionRate}%`;
+                document.getElementById('stat-completion').textContent = `${total > 0 ? Math.round((completed / total) * 100) : 0}%`;
             }
             updateNavStats();
         }
@@ -687,23 +850,17 @@
             const container = document.getElementById('heatmap-container');
             container.innerHTML = '';
             if (!state.activeSprintId) return;
-
             for (let day = 0; day < 30; day++) {
-                let completedCount = 0;
-                CHALLENGES.forEach(challenge => {
-                    const key = `${state.activeSprintId}-${day}-${challenge.id}`;
-                    if (state.progress[key]) completedCount++;
-                });
-
-                const intensity = completedCount / CHALLENGES.length;
+                let count = 0;
+                CHALLENGES.forEach(c => { if (state.progress[`${state.activeSprintId}-${day}-${c.id}`]) count++; });
+                const intensity = count / CHALLENGES.length;
                 let bgClass = 'bg-slate-800';
                 if (intensity > 0.75) bgClass = 'bg-sky-500';
                 else if (intensity > 0.5) bgClass = 'bg-sky-600/70';
                 else if (intensity > 0.25) bgClass = 'bg-sky-900/50';
-
                 const cell = document.createElement('div');
                 cell.className = `heatmap-cell w-full aspect-square rounded ${bgClass} cursor-pointer`;
-                cell.title = `Day ${day + 1}: ${completedCount}/${CHALLENGES.length} completed`;
+                cell.title = `Day ${day + 1}: ${count}/${CHALLENGES.length} completed`;
                 container.appendChild(cell);
             }
         }
@@ -712,26 +869,23 @@
             const container = document.getElementById('category-stats');
             const stats = calculateStats();
             container.innerHTML = '';
-
             CHALLENGES.forEach(challenge => {
                 const count = stats.categoryCounts[challenge.id];
                 const maxCount = state.sprints.length * 30;
                 const percentage = maxCount > 0 ? (count / maxCount) * 100 : 0;
-
                 const div = document.createElement('div');
                 div.className = 'space-y-2';
                 div.innerHTML = `
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-3">
-                            <span class="text-2xl">${challenge.icon}</span>
+                            <span>${challenge.icon}</span>
                             <span class="font-bold text-sm">${challenge.title}</span>
                         </div>
                         <span class="text-xs font-mono text-slate-500">${count}x</span>
                     </div>
                     <div class="h-2 bg-black/20 rounded-full overflow-hidden">
                         <div class="${challenge.bgColor} h-full transition-all duration-500" style="width: ${percentage}%"></div>
-                    </div>
-                `;
+                    </div>`;
                 container.appendChild(div);
             });
         }
@@ -740,8 +894,8 @@
             const container = document.getElementById('today-challenges');
             const todayIndex = getTodayIndex();
             container.innerHTML = '';
+            document.getElementById('today-date').textContent = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             if (!state.activeSprintId) return;
-
             CHALLENGES.forEach(challenge => {
                 const key = `${state.activeSprintId}-${todayIndex}-${challenge.id}`;
                 const isCompleted = state.progress[key];
@@ -750,11 +904,10 @@
                 div.onclick = () => window.toggleChallenge(todayIndex, challenge.id);
                 div.innerHTML = `
                     <div class="flex items-center gap-3">
-                        <span class="">${challenge.icon}</span>
+                        <span>${challenge.icon}</span>
                         <span class="font-bold text-sm">${challenge.title}</span>
                     </div>
-                    ${isCompleted ? '<svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : '<div class="w-5 h-5 rounded border-2 border-slate-600"></div>'}
-                `;
+                    ${isCompleted ? '<svg class="w-5 h-5 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : '<div class="w-5 h-5 rounded border-2 border-slate-600"></div>'}`;
                 container.appendChild(div);
             });
         }
@@ -766,12 +919,16 @@
                 let completedDays = 0;
                 for (let day = 0; day < 30; day++) {
                     let dayComplete = true;
-                    CHALLENGES.forEach(challenge => {
-                        const key = `${sprint.id}-${day}-${challenge.id}`;
-                        if (!state.progress[key]) dayComplete = false;
-                    });
+                    CHALLENGES.forEach(c => { if (!state.progress[`${sprint.id}-${day}-${c.id}`]) dayComplete = false; });
                     if (dayComplete) completedDays++;
                 }
+                // Count coding tasks for this sprint
+                const sprintTasks = state.codingTasks?.[sprint.id] || {};
+                let totalTasks = 0, doneTasks = 0;
+                Object.values(sprintTasks).forEach(dayTasks => {
+                    (dayTasks || []).forEach(t => { totalTasks++; if (t.done) doneTasks++; });
+                });
+
                 const percentage = Math.round((completedDays / 30) * 100);
                 const div = document.createElement('div');
                 div.className = 'glass-effect rounded-3xl p-6 border border-white/10 card-hover cursor-pointer';
@@ -785,11 +942,11 @@
                     </div>
                     <h3 class="text-lg font-black mb-2">${sprint.title}</h3>
                     <p class="text-xs text-slate-500 font-mono mb-4">${new Date(sprint.createdAt).toLocaleDateString()}</p>
+                    ${totalTasks > 0 ? `<div class="flex items-center gap-2 mb-3"><span class="code-tag">${doneTasks}/${totalTasks} tasks</span></div>` : ''}
                     <div class="space-y-2">
                         <div class="flex justify-between text-[10px] font-bold uppercase text-slate-500"><span>Completion</span><span>${percentage}%</span></div>
                         <div class="h-2 bg-black/20 rounded-full overflow-hidden"><div class="h-full bg-gradient-to-r from-sky-500 to-indigo-600 transition-all duration-500" style="width: ${percentage}%"></div></div>
-                    </div>
-                `;
+                    </div>`;
                 container.appendChild(div);
             });
         }
@@ -800,91 +957,372 @@
             document.getElementById('sprint-title').textContent = sprint.title;
             const container = document.getElementById('sprint-grid-container');
             const isMobile = window.innerWidth < 640;
-            
-            // GRID HEADER
-            let gridHtml = `
-                <div class="min-w-max">
-                    <div class="sprint-grid mb-6 sticky top-0 bg-slate-900/95 z-10 backdrop-blur pb-4 pt-2 border-b border-white/5">
-                        <div class="w-10"></div>
-                        ${CHALLENGES.map(c => `
-                            <div class="flex flex-col items-center gap-2">
-                                <div class="p-3 rounded-xl glass-effect text-2xl relative group hover:bg-white/10 transition-colors">
-                                    ${c.icon}
-                                    <div class="absolute inset-0 bg-${c.bgColor.split('-')[1]}-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                </div>
-                                <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 ${isMobile ? 'hidden' : ''}">${c.title}</span>
-                            </div>
-                        `).join('')}
-                        <div class="flex justify-center pb-1"><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Lock</span></div>
-                    </div>
-                    
-                    <div class="space-y-2">
-            `;
 
-            // GRID ROWS
-            Array.from({length: 30}, (_, i) => i).forEach(day => {
+            let gridHtml = `<div class="min-w-max">
+                <div class="sprint-grid mb-6 sticky top-0 bg-slate-900/95 z-10 backdrop-blur pb-4 pt-2 border-b border-white/5">
+                    <div class="w-10"></div>
+                    ${CHALLENGES.map(c => `
+                        <div class="flex flex-col items-center gap-2">
+                            <div class="p-3 rounded-xl glass-effect text-2xl relative group hover:bg-white/10 transition-colors">${c.icon}</div>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-slate-500 ${isMobile ? 'hidden' : ''}">${c.title}</span>
+                        </div>`).join('')}
+                    <div class="flex justify-center pb-1"><span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Lock</span></div>
+                </div>
+                <div class="space-y-2">`;
+
+            for (let day = 0; day < 30; day++) {
                 const lockKey = `${state.activeSprintId}-${day}`;
                 const isLocked = state.lockedDays[lockKey];
-                
+
+                // Count tasks for this day
+                const dayTasks = state.codingTasks?.[state.activeSprintId]?.[day] || [];
+                const doneTasks = dayTasks.filter(t => t.done).length;
+                const hasTask = dayTasks.length > 0;
+
                 gridHtml += `
                     <div class="sprint-grid p-2 rounded-xl transition-all ${isLocked ? 'bg-amber-500/5 border border-amber-500/20' : 'hover:bg-white/5'}">
-                        <!-- Day Number -->
-                        <div class="text-center text-sm font-mono font-bold text-slate-500">${String(day + 1).padStart(2, '0')}</div>
-                        
-                        <!-- Challenges -->
+                        <div class="text-center text-sm font-mono font-bold text-slate-500">
+                            ${String(day + 1).padStart(2, '0')}
+                            ${hasTask ? `<div class="text-[8px] font-bold text-sky-500 mt-1">${doneTasks}/${dayTasks.length}</div>` : ''}
+                        </div>
                         ${CHALLENGES.map(c => {
                             const key = `${state.activeSprintId}-${day}-${c.id}`;
                             const isCompleted = state.progress[key];
-                            return `
-                                <button onclick="window.toggleChallenge(${day}, '${c.id}')" 
-                                    class="challenge-btn w-full h-16 rounded-xl border-2 flex items-center justify-center 
-                                    ${isLocked ? 
-                                        'opacity-30 cursor-not-allowed bg-slate-800 border-transparent' : 
-                                        (isCompleted ? `${c.bgColor} border-transparent text-white shadow-lg scale-100` : 'glass-effect border-white/10 opacity-40 hover:opacity-100 hover:border-white/30')
-                                    }"
-                                    ${isLocked ? 'disabled' : ''}>
-                                    ${isCompleted ? '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : ''}
-                                </button>
-                            `;
+                            return `<button onclick="window.toggleChallenge(${day}, '${c.id}')" 
+                                class="challenge-btn w-full h-16 rounded-xl border-2 flex items-center justify-center 
+                                ${isLocked ? 'opacity-30 cursor-not-allowed bg-slate-800 border-transparent' : 
+                                    (isCompleted ? `${c.bgColor} border-transparent text-white shadow-lg` : 'glass-effect border-white/10 opacity-40 hover:opacity-100 hover:border-white/30')}"
+                                ${isLocked ? 'disabled' : ''}>
+                                ${isCompleted ? '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                            </button>`;
                         }).join('')}
-                        
-                        <!-- Lock Button -->
-                        <div class="flex justify-center">
+                        <div class="flex flex-col gap-1 items-center">
+                            <!-- Add Task Button -->
+                            <button onclick="window.openAddTaskModal(${day})" 
+                                class="w-full h-7 rounded-lg transition-all text-[9px] font-bold flex items-center justify-center gap-1 glass-effect hover:bg-sky-500/20 hover:text-sky-400 border border-white/10 hover:border-sky-500/30 text-slate-500"
+                                title="Add Coding Task">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                                <span class="${isMobile ? 'hidden' : ''}">Task</span>
+                            </button>
+                            <!-- Lock Button -->
                             <button onclick="${isLocked ? '' : `window.lockDay(${day})`}" 
-                                class="w-full h-16 rounded-xl transition-all font-bold uppercase text-xs tracking-wider flex items-center justify-center gap-2 
-                                ${isLocked ? 
-                                    'text-amber-500 bg-amber-500/10 cursor-not-allowed border border-amber-500/20' : 
-                                    'glass-effect hover:bg-amber-500 hover:text-white hover:border-amber-500 border border-white/10 text-slate-400'
-                                }" 
+                                class="w-full h-7 rounded-lg transition-all text-[9px] font-bold flex items-center justify-center gap-1
+                                ${isLocked ? 'text-amber-500 bg-amber-500/10 cursor-not-allowed border border-amber-500/20' : 'glass-effect hover:bg-amber-500 hover:text-white hover:border-amber-500 border border-white/10 text-slate-400'}" 
                                 title="${isLocked ? 'Locked' : 'Lock Day'}">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${isLocked ? 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z' : 'M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z'}"></path>
                                 </svg>
                             </button>
                         </div>
-                    </div>
-                `;
-            });
-
+                    </div>`;
+            }
             gridHtml += `</div></div>`;
             container.innerHTML = gridHtml;
         }
 
-        // ===== EXPOSED GLOBAL FUNCTIONS =====
+        // ============================================
+        // CODING TASKS VIEW RENDER
+        // ============================================
+        function getCodingTaskStats() {
+            let total = 0, done = 0, xpEarned = 0;
+            const sprintId = ctActiveSprint || state.activeSprintId;
+            const sprintTasks = state.codingTasks?.[sprintId] || {};
+            Object.values(sprintTasks).forEach(dayTasks => {
+                (dayTasks || []).forEach(t => {
+                    total++;
+                    if (t.done) { done++; xpEarned += (t.xp || 10); }
+                });
+            });
+            return { total, done, xpEarned };
+        }
+
+        function renderCodingTasksView() {
+            const sprintId = ctActiveSprint || state.activeSprintId;
+
+            // Render sprint selector
+            const selectorEl = document.getElementById('ct-sprint-selector');
+            selectorEl.innerHTML = '';
+            state.sprints.forEach(sprint => {
+                const btn = document.createElement('button');
+                btn.className = `tab-btn px-3 py-1.5 rounded-xl text-xs font-bold border border-white/10 glass-effect transition-all ${sprint.id === sprintId ? 'active' : ''}`;
+                btn.textContent = sprint.title;
+                btn.onclick = () => { ctActiveSprint = sprint.id; renderCodingTasksView(); };
+                selectorEl.appendChild(btn);
+            });
+
+            // Stats
+            const stats = getCodingTaskStats();
+            document.getElementById('ct-stat-total').textContent = stats.total;
+            document.getElementById('ct-stat-done').textContent = stats.done;
+            document.getElementById('ct-stat-xp').textContent = stats.xpEarned;
+
+            // Collect all tasks
+            const sprintTasks = state.codingTasks?.[sprintId] || {};
+            let allTasks = [];
+            for (let day = 0; day < 30; day++) {
+                const dayTasks = sprintTasks[day] || [];
+                dayTasks.forEach(task => allTasks.push({ ...task, day }));
+            }
+
+            // Filter
+            if (ctFilter === 'pending') allTasks = allTasks.filter(t => !t.done);
+            else if (ctFilter === 'done') allTasks = allTasks.filter(t => t.done);
+
+            // Sort
+            if (ctSort === 'priority') {
+                const p = { high: 0, medium: 1, low: 2 };
+                allTasks.sort((a, b) => (p[a.priority] || 1) - (p[b.priority] || 1));
+            } else if (ctSort === 'xp') {
+                allTasks.sort((a, b) => (b.xp || 10) - (a.xp || 10));
+            } else {
+                allTasks.sort((a, b) => a.day - b.day);
+            }
+
+            const container = document.getElementById('coding-tasks-list');
+            const emptyEl = document.getElementById('ct-empty');
+
+            if (allTasks.length === 0) {
+                container.innerHTML = '';
+                emptyEl.classList.remove('hidden');
+                return;
+            }
+            emptyEl.classList.add('hidden');
+
+            // Group by day if sorting by day
+            if (ctSort === 'day') {
+                const grouped = {};
+                allTasks.forEach(t => { if (!grouped[t.day]) grouped[t.day] = []; grouped[t.day].push(t); });
+                
+                container.innerHTML = '';
+                Object.keys(grouped).sort((a, b) => Number(a) - Number(b)).forEach(day => {
+                    const dayTasks = grouped[day];
+                    const doneCnt = dayTasks.filter(t => t.done).length;
+                    const group = document.createElement('div');
+                    group.className = 'glass-effect rounded-2xl border border-white/10 overflow-hidden';
+                    group.innerHTML = `
+                        <div class="flex items-center justify-between px-5 py-4 border-b border-white/5 cursor-pointer hover:bg-white/5 transition-all" onclick="this.nextElementSibling.classList.toggle('collapsed'); this.nextElementSibling.classList.toggle('expanded')">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-sky-500/10 border border-sky-500/20 flex items-center justify-center font-mono font-black text-sky-400 text-sm">${String(Number(day)+1).padStart(2,'0')}</div>
+                                <div>
+                                    <div class="font-black text-sm uppercase tracking-wide">Day ${Number(day)+1}</div>
+                                    <div class="text-[10px] font-mono text-slate-500">${doneCnt}/${dayTasks.length} completed</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="h-1.5 w-24 bg-black/20 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gradient-to-r from-sky-500 to-indigo-500 transition-all" style="width:${dayTasks.length > 0 ? Math.round((doneCnt/dayTasks.length)*100) : 0}%"></div>
+                                </div>
+                                <button onclick="event.stopPropagation(); window.openAddTaskModal(${day}, '${sprintId}')" class="px-3 py-1.5 rounded-lg text-[10px] font-bold bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 border border-sky-500/20 transition-all flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"></path></svg>
+                                    Add
+                                </button>
+                                <svg class="w-4 h-4 text-slate-600 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </div>
+                        </div>
+                        <div class="collapsible-content expanded p-3 space-y-2">
+                            ${dayTasks.map(task => renderTaskItem(task, sprintId)).join('')}
+                        </div>`;
+                    container.appendChild(group);
+                });
+            } else {
+                // Flat list
+                container.innerHTML = `<div class="glass-effect rounded-2xl border border-white/10 overflow-hidden p-3 space-y-2">
+                    ${allTasks.map(task => renderTaskItem(task, sprintId)).join('')}
+                </div>`;
+            }
+        }
+
+        function renderTaskItem(task, sprintId) {
+            const priorityColors = { high: 'priority-high', medium: 'priority-medium', low: 'priority-low' };
+            const tags = (task.tags || []).map(tag => `<span class="tag-badge">${tag}</span>`).join('');
+            
+            return `
+                <div class="task-item ${task.done ? 'completed' : ''} flex items-start gap-3 p-3 rounded-xl border border-white/5 transition-all group" id="task-${task.id}">
+                    <!-- Checkbox -->
+                    <button onclick="window.toggleTask('${sprintId}', ${task.day}, '${task.id}')" 
+                        class="mt-0.5 w-5 h-5 rounded-md border-2 flex-shrink-0 flex items-center justify-center transition-all
+                        ${task.done ? 'bg-sky-500 border-sky-500 text-white' : 'border-slate-600 hover:border-sky-500'}">
+                        ${task.done ? '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>' : ''}
+                    </button>
+                    
+                    <!-- Content -->
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-wrap items-center gap-2 mb-1">
+                            <span class="task-title font-bold text-sm">${task.title}</span>
+                            <span class="priority-badge ${priorityColors[task.priority] || 'priority-medium'}">${task.priority || 'medium'}</span>
+                            ${task.category ? `<span class="tag-badge">${task.category}</span>` : ''}
+                        </div>
+                        ${task.description ? `<p class="text-xs text-slate-500 mb-2">${task.description}</p>` : ''}
+                        <div class="flex flex-wrap items-center gap-2">
+                            ${tags}
+                            <span class="text-[10px] font-bold text-sky-500 font-mono">+${task.xp || 10} XP</span>
+                            ${task.done && task.completedAt ? `<span class="text-[10px] text-slate-600 font-mono">✓ ${new Date(task.completedAt).toLocaleDateString()}</span>` : ''}
+                        </div>
+                    </div>
+                    
+                    <!-- Actions -->
+                    <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="window.deleteTask('${sprintId}', ${task.day}, '${task.id}')" 
+                            class="p-1.5 rounded-lg text-red-500/50 hover:text-red-500 hover:bg-red-500/10 transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                    </div>
+                </div>`;
+        }
+
+        // ============================================
+        // CODING TASK ACTIONS (exposed globally)
+        // ============================================
+        let modalTargetDay = 0;
+        let modalTargetSprint = null;
+
+        window.openAddTaskModal = function(day, sprintId) {
+            modalTargetDay = parseInt(day);
+            modalTargetSprint = sprintId || ctActiveSprint || state.activeSprintId;
+            document.getElementById('modal-task-day-label').textContent = `Day ${modalTargetDay + 1} · ${state.sprints.find(s => s.id === modalTargetSprint)?.title || ''}`;
+            // Reset form
+            document.getElementById('task-input-title').value = '';
+            document.getElementById('task-input-desc').value = '';
+            document.getElementById('task-input-priority').value = 'medium';
+            document.getElementById('task-input-category').value = 'frontend';
+            document.getElementById('task-input-tags').value = '';
+            document.getElementById('task-input-xp').value = '10';
+            // Reset XP buttons
+            document.querySelectorAll('.xp-btn').forEach(b => b.classList.remove('bg-sky-500', 'text-white', 'border-sky-500'));
+            document.querySelector('.xp-btn[data-xp="10"]').classList.add('bg-sky-500', 'text-white', 'border-sky-500');
+            document.getElementById('modal-add-task').classList.remove('hidden');
+            setTimeout(() => document.getElementById('task-input-title').focus(), 100);
+        };
+
+        window.toggleTask = function(sprintId, day, taskId) {
+            if (!state.codingTasks[sprintId]) state.codingTasks[sprintId] = {};
+            if (!state.codingTasks[sprintId][day]) state.codingTasks[sprintId][day] = [];
+            const tasks = state.codingTasks[sprintId][day];
+            const task = tasks.find(t => t.id === taskId);
+            if (!task) return;
+            task.done = !task.done;
+            task.completedAt = task.done ? Date.now() : null;
+            saveState();
+            renderCodingTasksView();
+            updateDashboardStats();
+            if (task.done) showNotification(`+${task.xp || 10} XP earned! 🎉`);
+        };
+
+        window.deleteTask = function(sprintId, day, taskId) {
+            if (!state.codingTasks[sprintId]?.[day]) return;
+            state.codingTasks[sprintId][day] = state.codingTasks[sprintId][day].filter(t => t.id !== taskId);
+            saveState();
+            renderCodingTasksView();
+            updateDashboardStats();
+            showNotification('Task deleted');
+        };
+
+        // XP button selection
+        document.querySelectorAll('.xp-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.xp-btn').forEach(b => b.classList.remove('bg-sky-500', 'text-white', 'border-sky-500'));
+                btn.classList.add('bg-sky-500', 'text-white', 'border-sky-500');
+                document.getElementById('task-input-xp').value = btn.dataset.xp;
+            });
+        });
+
+        // Save task
+        document.getElementById('btn-save-task').onclick = function() {
+            const title = document.getElementById('task-input-title').value.trim();
+            if (!title) { showNotification('Task title required!', 'error'); return; }
+
+            const sprintId = modalTargetSprint;
+            const day = modalTargetDay;
+
+            if (!state.codingTasks[sprintId]) state.codingTasks[sprintId] = {};
+            if (!state.codingTasks[sprintId][day]) state.codingTasks[sprintId][day] = [];
+
+            const tagsRaw = document.getElementById('task-input-tags').value.trim();
+            const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+
+            const newTask = {
+                id: 'task-' + Date.now(),
+                title,
+                description: document.getElementById('task-input-desc').value.trim(),
+                priority: document.getElementById('task-input-priority').value,
+                category: document.getElementById('task-input-category').value,
+                tags,
+                xp: parseInt(document.getElementById('task-input-xp').value) || 10,
+                done: false,
+                createdAt: Date.now(),
+                completedAt: null
+            };
+
+            state.codingTasks[sprintId][day].push(newTask);
+            saveState();
+            document.getElementById('modal-add-task').classList.add('hidden');
+            showNotification(`Task added to Day ${day + 1}!`);
+
+            // Refresh sprint grid if visible
+            if (state.currentView === 'sprint-detail') renderSprintDetail();
+            if (state.currentView === 'coding-tasks') renderCodingTasksView();
+            renderSprintsList();
+            updateDashboardStats();
+        };
+
+        // Filter/Sort buttons
+        document.querySelectorAll('.ct-filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.ct-filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                ctFilter = btn.dataset.filter;
+                renderCodingTasksView();
+            });
+        });
+
+        document.querySelectorAll('.ct-sort-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.ct-sort-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                ctSort = btn.dataset.sort;
+                renderCodingTasksView();
+            });
+        });
+
+        // ============================================
+        // VIEW SWITCHER
+        // ============================================
+        window.showView = function(viewName) {
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-sprint-detail').classList.add('hidden');
+            document.getElementById('view-coding-tasks').classList.add('hidden');
+            
+            if (viewName === 'dashboard') {
+                state.currentView = 'dashboard';
+                document.getElementById('view-dashboard').classList.remove('hidden');
+                updateDashboardStats();
+                renderHeatmap();
+                renderCategoryStats();
+                renderTodayChallenges();
+                renderSprintsList();
+                document.getElementById('nav-btn-tasks').classList.remove('active');
+            } else if (viewName === 'coding-tasks') {
+                state.currentView = 'coding-tasks';
+                ctActiveSprint = ctActiveSprint || state.activeSprintId;
+                document.getElementById('view-coding-tasks').classList.remove('hidden');
+                renderCodingTasksView();
+                document.getElementById('nav-btn-tasks').classList.add('active');
+            } else if (viewName === 'sprint-detail') {
+                state.currentView = 'sprint-detail';
+                document.getElementById('view-sprint-detail').classList.remove('hidden');
+            }
+        };
+
+        // ============================================
+        // ORIGINAL EXPOSED FUNCTIONS
+        // ============================================
         window.toggleChallenge = function(dayIndex, challengeId) {
             if (!state.activeSprintId) return;
             const lockKey = `${state.activeSprintId}-${dayIndex}`;
-            
-            if (state.lockedDays[lockKey]) { 
-                showNotification('Day is locked! Cannot edit.', 'error'); 
-                return; 
-            }
-            
+            if (state.lockedDays[lockKey]) { showNotification('Day is locked! Cannot edit.', 'error'); return; }
             const key = `${state.activeSprintId}-${dayIndex}-${challengeId}`;
             state.progress[key] = !state.progress[key];
-            
             renderSprintDetail();
-            
             saveState();
             updateDashboardStats();
             renderHeatmap();
@@ -897,32 +1335,27 @@
             saveState();
             renderSprintDetail();
             document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-coding-tasks').classList.add('hidden');
             document.getElementById('view-sprint-detail').classList.remove('hidden');
         };
 
         window.lockDay = function(dayIndex) {
             const lockKey = `${state.activeSprintId}-${dayIndex}`;
             state.lockedDays[lockKey] = true;
-            
             renderSprintDetail();
             saveState();
-            
             showNotification('Day locked successfully.');
         };
 
-        // ===== INIT SEQUENCE =====
+        // ============================================
+        // INIT
+        // ============================================
         if (auth) {
-            signInAnonymously(auth).catch((error) => {
-                console.error("Auth Error:", error);
-                showNotification("Auth Error: Check Console", "error");
-            });
-
+            signInAnonymously(auth).catch(e => { console.error("Auth Error:", e); });
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
                     currentAuthUid = user.uid;
-                    
                     const existingId = getDataId();
-                    
                     if (existingId) {
                         await loadState();
                         document.getElementById('loading-screen').classList.add('opacity-0', 'pointer-events-none');
@@ -941,7 +1374,7 @@
             });
         }
 
-        // ===== DOM EVENTS =====
+        // DOM Events
         document.getElementById('btn-new-sprint').onclick = () => {
             const newId = `s${Date.now()}`;
             const newSprint = { id: newId, title: `Sprint #${state.sprints.length + 1}`, createdAt: Date.now() };
@@ -953,27 +1386,18 @@
             showNotification('New sprint created!');
         };
 
-        document.getElementById('btn-back-dashboard').onclick = () => {
-            state.currentView = 'dashboard';
-            document.getElementById('view-sprint-detail').classList.add('hidden');
-            document.getElementById('view-dashboard').classList.remove('hidden');
-            updateDashboardStats();
-            renderHeatmap();
-            renderCategoryStats();
-            renderTodayChallenges();
-        };
+        document.getElementById('btn-back-dashboard').onclick = () => window.showView('dashboard');
 
         document.getElementById('btn-delete-sprint').onclick = () => {
             state.sprints = state.sprints.filter(s => s.id !== state.activeSprintId);
             if (state.sprints.length > 0) state.activeSprintId = state.sprints[0].id;
             else {
-                const newSprint = { id: 's1', title: 'Sprint #1', createdAt: Date.now() };
-                state.sprints.push(newSprint);
+                const ns = { id: 's1', title: 'Sprint #1', createdAt: Date.now() };
+                state.sprints.push(ns);
                 state.activeSprintId = 's1';
             }
             saveState();
-            document.getElementById('view-sprint-detail').classList.add('hidden');
-            document.getElementById('view-dashboard').classList.remove('hidden');
+            window.showView('dashboard');
             renderSprintsList();
             showNotification('Sprint deleted');
         };
